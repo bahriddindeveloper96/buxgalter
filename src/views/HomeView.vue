@@ -28,16 +28,46 @@
   <!-- Services Section -->
   <section class="services py-5">
     <div class="container">
-      <h2 class="text-center mb-5">{{ services.title }}</h2>
+      <h2 class="text-center mb-5">{{ $t('home.services.title') }}</h2>
       <div class="row g-4">
-        <div v-for="(service, index) in services.items" :key="index" class="col-md-4">
+        <div v-for="(service, index) in services" :key="index" class="col-md-4">
           <div class="card service-card h-100">            
             <div class="card-body text-center">
               <div class="icon-wrapper mb-4">
-                <i :class="[service.icon, 'fa-3x', 'text-primary']"></i>
+                <i :class="[service.icon, 'fa-3x']"></i>
               </div>
-              <h3 class="card-title h5 mb-3">{{ service.title }}</h3>
-              <p class="card-text">{{ service.description }}</p>
+              <h3 class="card-title h5 mb-3">{{ $t(`home.services.${service.key}.title`) }}</h3>
+              <p class="card-text">{{ $t(`home.services.${service.key}.description`) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="pricing py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-5">{{ $t('home.pricing.title') }}</h2>
+      <div class="row g-4">
+        <div v-for="(plan, index) in pricingPlans" :key="index" class="col-md-4">
+          <div class="card pricing-card h-100" :class="{ 'popular': plan.isPopular }">
+            <div class="card-header text-center py-4">
+              <h3 class="mb-0">{{ $t(`home.pricing.${plan.key}.name`) }}</h3>
+              <div class="price mt-3">
+                <span class="currency">$</span>
+                <span class="amount">{{ plan.price }}</span>
+                <span class="period">/{{ $t('home.pricing.monthly') }}</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <ul class="list-unstyled mb-4">
+                <li v-for="(feature, fIndex) in plan.features" :key="fIndex" class="mb-3">
+                  <i class="fas fa-check text-success me-2"></i>
+                  {{ $t(`home.pricing.${plan.key}.feature${fIndex + 1}`) }}
+                </li>
+              </ul>
+              <button class="btn btn-primary w-100">{{ $t('home.pricing.getStarted') }}</button>
             </div>
           </div>
         </div>
@@ -185,7 +215,7 @@
               <label for="service" class="form-label">Xizmat turi</label>
               <select class="form-select" id="service" v-model="consultationForm.service" required>
                 <option value="">Tanlang...</option>
-                <option v-for="service in services.items" :key="service.title" :value="service.title">
+                <option v-for="service in services" :key="service.title" :value="service.title">
                   {{ service.title }}
                 </option>
               </select>
@@ -232,6 +262,40 @@ export default {
           clickable: true
         }
       },
+      services: [
+        {
+          key: 'business',
+          icon: 'fas fa-chart-line'
+        },
+        {
+          key: 'consulting',
+          icon: 'fas fa-handshake'
+        },
+        {
+          key: 'international',
+          icon: 'fas fa-globe'
+        }
+      ],
+      pricingPlans: [
+        {
+          key: 'basic',
+          price: '299',
+          features: ['feature1', 'feature2', 'feature3', 'feature4'],
+          isPopular: false
+        },
+        {
+          key: 'pro',
+          price: '599',
+          features: ['feature1', 'feature2', 'feature3', 'feature4', 'feature5'],
+          isPopular: true
+        },
+        {
+          key: 'enterprise',
+          price: '999',
+          features: ['feature1', 'feature2', 'feature3', 'feature4', 'feature5', 'feature6'],
+          isPopular: false
+        }
+      ],
       consultationForm: {
         name: '',
         phone: '',
@@ -378,6 +442,7 @@ export default {
   color: #6c757d;
   line-height: 1.6;
 }
+
 .footer {
   position: relative;
 }
@@ -418,5 +483,91 @@ export default {
 
 .bottom-footer {
   background-color: rgba(0, 0, 0, 0.2);
+}
+
+.service-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.icon-wrapper {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  color: white;
+}
+
+.pricing-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s ease;
+}
+
+.pricing-card.popular {
+  transform: scale(1.05);
+  border: 2px solid var(--primary-gradient);
+  position: relative;
+}
+
+.pricing-card.popular::before {
+  content: '★ Popular';
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: var(--primary-gradient);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.pricing-card:hover:not(.popular) {
+  transform: translateY(-5px);
+}
+
+.pricing-card .card-header {
+  background: transparent;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.price .currency {
+  font-size: 1.5rem;
+  font-weight: 500;
+  vertical-align: super;
+}
+
+.price .period {
+  font-size: 1rem;
+  color: #64748b;
+  font-weight: normal;
+}
+
+.pricing-card ul li {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 991px) {
+  .pricing-card.popular {
+    transform: scale(1);
+    margin: 1rem 0;
+  }
 }
 </style>
