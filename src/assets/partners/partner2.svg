@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="80px" viewBox="0 0 200 80" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="#2563EB" opacity="0.1" x="20" y="10" width="160" height="60" rx="4"></rect>
+        <text font-family="Arial-BoldMT, Arial" font-size="24" font-weight="bold" fill="#2563EB">
+            <tspan x="45" y="48">PARTNER 2</tspan>
+        </text>
+    </g>
+</svg>
